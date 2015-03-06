@@ -176,6 +176,7 @@ public class DatabaseControl
 	public int describeTable()
 	{
 		int rowsAffected = 0;
+		//this is were the database.table rows and then the values
 		String insertQuery = "INSERT INTO ``.``() VALUES ();";
 		
 		try
