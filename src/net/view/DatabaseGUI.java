@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
 
@@ -16,7 +17,7 @@ import net.DataBase.appController;
 /**
  * 
  * @author jlin3312
- * @version .1
+ * @version 1.3 adding display tables
  * 
  */
 public class DatabaseGUI extends JPanel
@@ -27,15 +28,16 @@ public class DatabaseGUI extends JPanel
 	private JScrollPane displayPane;
 	private SpringLayout baselayout;
 	private appController baseController = new appController();
+	private JTable tabledata;
 	
 	public DatabaseGUI()
 	{
 		appButton = new JButton("Query");
 		DisplayArea = new JTextArea(10,30);
-		displayPane = new JScrollPane(DisplayArea);
+		//displayPane = new JScrollPane(DisplayArea);
 		baselayout = new SpringLayout();
 		
-		
+		setupTable();
 		setupPane();
 		setupPanel();
 		setupLayout();
@@ -48,6 +50,13 @@ public class DatabaseGUI extends JPanel
 		this.setLayout(baselayout);
 		this.add(appButton);
 		this.add(displayPane);
+	}
+	
+	private void setupTable()
+	{
+		//one D array for column titles
+		//2D array for contents.
+		displayPane = new JScrollPane(tabledata);
 	}
 	
 	public void setupPane()

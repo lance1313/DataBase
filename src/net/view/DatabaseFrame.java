@@ -6,7 +6,7 @@ import net.DataBase.DatabaseControl;
 /**
  * 
  * @author jlin3312
- * @version .1
+ * @version 1.0
  * this is the frame to hold th Gui for my databases.
  */
 public class DatabaseFrame extends JFrame

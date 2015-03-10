@@ -4,7 +4,7 @@ import net.view.DatabaseFrame;
 /**
  * this controlles the GUI and the table.
  * @author jlin3312
- *@version.1
+ *@version 1.1 I added the 2 methods
  *
  */
 public class appController

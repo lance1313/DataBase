@@ -13,7 +13,7 @@ import net.view.DatabaseFrame;
 /**
  * this is in charcge of talking to the database.
  * @author jlin3312
- * @version .1
+ * @version 1.2 fixed the error messages.
  * this controles the actions betwwen the models and the view.
  */
 public class DatabaseControl
@@ -136,6 +136,45 @@ public class DatabaseControl
 		
 		return results;
 	}
+	
+	public String [] [] tableInfo()
+	{
+		String [] [] results;
+		String query = "SHOW TABLES";
+		
+		try
+		{
+			//a statment is required to transfer
+			Statement firstStatement = databaseConnection.createStatement();
+			//resultSet is the data in the database server.
+			ResultSet answer = firstStatement.executeQuery(query);
+			int rowCount;
+			answer.last();
+			rowCount = answer.getRow();
+			answer.beforeFirst();
+			//this line is telling the database that the one d array is relly a two d array with one row.
+			results = new String [rowCount] [1];
+			
+			while(answer.next())
+			{
+				//this gets the colom 0 and row is minus 1 because it staerts at 0.
+				results[answer.getRow()-1][1] = answer.getString(1);
+			}
+			
+			answer.close();
+			firstStatement.close();
+			
+		}
+		
+		catch(SQLException currentSQLError)
+		{
+			//this is a safty net if other code fails and no data is present.
+			results = new String [] [] {{"empty"}};
+			displayErrors(currentSQLError);
+		}
+		
+		return results;
+	}
 	/**
 	 * 
 	 * @return
@@ -177,7 +216,7 @@ public class DatabaseControl
 	{
 		int rowsAffected = 0;
 		//this is were the database.table rows and then the values
-		String insertQuery = "INSERT INTO ``.``() VALUES ();";
+		String insertQuery = "INSERT INTO `keplarparts`.`contry`(`ID`,`Name_of_contry`) VALUES (10,`hi`);";
 		
 		try
 		{
