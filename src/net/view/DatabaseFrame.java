@@ -3,6 +3,7 @@ package net.view;
 import javax.swing.JFrame;
 
 import net.DataBase.DatabaseControl;
+import net.DataBase.appController;
 /**
  * 
  * @author jlin3312
@@ -13,12 +14,13 @@ public class DatabaseFrame extends JFrame
 {
 	private DatabaseGUI GUI;
 	private DatabaseControl control;
+	private appController bc;
 	
-	public DatabaseFrame()
+	public DatabaseFrame(appController baseController)
 	{
-		
+		this.bc = baseController;
 		// this.control = control;
-		 GUI = new DatabaseGUI();
+		 GUI = new DatabaseGUI(bc);
 		 setupFrame();
 	}
 	
@@ -27,10 +29,11 @@ public class DatabaseFrame extends JFrame
 	
 	public void setupFrame()
 	{
-		this.setContentPane(GUI);// this means i can do all the parent
+		
 		// class can do to .
-		this.setSize(1000, 1000);
+		this.setSize(404, 404);
 		this.setResizable(true);
+		this.setContentPane(GUI);// this means i can do all the parent
 		this.setVisible(true);
 	}
 

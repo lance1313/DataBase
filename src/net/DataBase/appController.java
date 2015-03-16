@@ -14,8 +14,8 @@ public class appController
 	
 	public appController()
 	{
-		database = new DatabaseControl(null);
-		appFrame = new DatabaseFrame();
+		database = new DatabaseControl(this);
+		appFrame = new DatabaseFrame(this);
 	}
 	
 	public void start()

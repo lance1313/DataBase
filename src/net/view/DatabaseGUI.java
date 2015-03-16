@@ -1,15 +1,18 @@
 package net.view;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.SpringLayout;
+import javax.swing.table.DefaultTableModel;
 
 import net.DataBase.DatabaseControl;
 import net.DataBase.DatabaseRunner;
@@ -27,15 +30,18 @@ public class DatabaseGUI extends JPanel
 	private JTextArea DisplayArea;
 	private JScrollPane displayPane;
 	private SpringLayout baselayout;
-	private appController baseController = new appController();
+	private appController baseController;
 	private JTable tabledata;
+	private JPasswordField password;
 	
-	public DatabaseGUI()
+	public DatabaseGUI(appController bc)
 	{
+		this.baseController = bc;
 		appButton = new JButton("Query");
 		DisplayArea = new JTextArea(10,30);
 		//displayPane = new JScrollPane(DisplayArea);
 		baselayout = new SpringLayout();
+		password = new JPasswordField(null,30);
 		
 		setupTable();
 		setupPane();
@@ -50,12 +56,16 @@ public class DatabaseGUI extends JPanel
 		this.setLayout(baselayout);
 		this.add(appButton);
 		this.add(displayPane);
+		this.add(password);
+		//password.setEchoChar(``);
+		password.setFont(new Font("Serif", Font.BOLD, 30));
 	}
 	
 	private void setupTable()
 	{
 		//one D array for column titles
 		//2D array for contents.
+		tabledata = new JTable(baseController.getDatabase().tableInfo(),baseController.getDatabase().getMetaData());
 		displayPane = new JScrollPane(tabledata);
 	}
 	
