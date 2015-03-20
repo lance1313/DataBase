@@ -41,6 +41,26 @@ public class DatabaseControl
 		setupConnection();
 
 	}
+	
+	/**
+	 * ? means it interupts the code to talk to tyhe code in the program
+	 * & is a continuation of the ?
+	 * @param pathToServer this is for the database
+	 * @param databaseName the name
+	 * @param user the user 
+	 * @param password the password if there is one.
+	 */
+	public void connectionStringBuilder(String pathToServer,String databaseName,String user,String password)
+	{
+		connectionString = "jdbc:mysql://";
+		connectionString += pathToServer;
+		connectionString +="/" + databaseName;
+		connectionString +="?user=" + user;
+		connectionString +="&password=" + password;
+		
+		
+		
+	}
 
 	/**
 	 * this checks if you can connect to the database and if not gives an error.
@@ -59,7 +79,7 @@ public class DatabaseControl
 	}
 
 	// use to connect to a database
-	private void setupConnection()
+	public void setupConnection()
 	{
 		try
 		{
@@ -71,6 +91,9 @@ public class DatabaseControl
 		}
 	}
 
+	/**
+	 * This is to make sure i close my server when done.
+	 */
 	public void closeConnection()
 	{
 		try
@@ -154,6 +177,106 @@ public class DatabaseControl
 		}
 	}
 	
+	private boolean checkForStructureViolation()
+	{
+		
+		if(currentQuery.toUpperCase().contains(" DATABASE "))
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+		
+		
+		
+	}
+	
+	/**
+	 * method for drooping tables or indices from a database. if a db drop is tried error accurse.
+	 */
+	public void dropStatement()
+	{
+		String results;
+		try
+		{
+			if(checkForStructureViolation())
+			{
+				throw new SQLException("No no no you didn't say the magic word no no no.","Duh",Integer.MIN_VALUE);
+			}
+			
+			if(currentQuery.toUpperCase().contains("INDEX"))
+			{
+				results = "The index was ";
+			}
+			else
+			{
+				results = "The table was ";
+			}
+			
+			Statement dropStatement = databaseConnection.createStatement();
+			dropStatement.executeQuery(currentQuery);
+			int affected = dropStatement.executeUpdate(currentQuery);
+			
+			dropStatement.close();
+			
+			if(affected == 0)
+			{
+				results +=" not dropped";
+			}
+			else
+			{
+				results += " not dropped";
+			}
+			JOptionPane.showMessageDialog(baseController.getAppFrame(), results);
+		}
+		catch(SQLException dropError)
+		{
+			displayErrors(dropError);
+		}
+	}
+	
+	public void CreateStatement()
+	{
+		String results;
+		try
+		{
+			if(checkForStructureViolation())
+			{
+				throw new SQLException("No no no you didn't say the magic word no no no.","Duh",Integer.MIN_VALUE);
+			}
+			
+			if(currentQuery.toUpperCase().contains("CREATE DATABASE"))
+			{
+				results = "The create was ";
+			}
+			
+			Statement createStatement = databaseConnection.createStatement();
+			createStatement.executeQuery(currentQuery);
+			int affected = createStatement.executeUpdate(currentQuery);
+			createStatement.close();
+			
+//			if(affected != 0)
+//			{
+//				
+//			}
+//			
+//			else
+//			{
+//				results +=" not dropped";
+//			}
+		}
+		catch(SQLException createError)
+		{
+			displayErrors(createError);
+		}
+	}
+	/**
+	 * 
+	 * @param query the question you type into the GUI
+	 * @return the qestion
+	 */
 	public String[][] selectQueryResults(String query)
 	{
 		
@@ -204,6 +327,10 @@ public class DatabaseControl
 		return results;
 	}
 	
+	/**
+	 * this is the new way to transfer String to commands
+	 * @return the commmand to the server
+	 */
 	public String [] [] realResults()
 	{
 		String [] [] results;
@@ -246,6 +373,10 @@ public class DatabaseControl
 		return results;
 	}
 
+	/**
+	 * this gives the data to the GUI
+	 * @return the staement.
+	 */
 	public String[][] tableInfo()
 	{
 		String[][] results = { { "default" } };
@@ -285,6 +416,10 @@ public class DatabaseControl
 		return results;
 	}
 
+	/**
+	 * The metadata on the server
+	 * @return gets the data
+	 */
 	public String[] getMetaData()
 	{
 		String[] colomnInformation;
@@ -352,6 +487,10 @@ public class DatabaseControl
 	}
 
 	// insert method
+	/**
+	 * The new table
+	 * @return
+	 */
 	public int describeTable()
 	{
 		int rowsAffected = 0;

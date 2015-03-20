@@ -16,11 +16,15 @@ public class appController
 	{
 		database = new DatabaseControl(this);
 		appFrame = new DatabaseFrame(this);
+		
 	}
-	
+	/**
+	 * the method to call other methods.
+	 */
 	public void start()
 	{
-		
+		database.connectionStringBuilder(pathToServer, databaseName, user, password);
+		database.setupConnection();
 	}
 	/**
 	 * 
