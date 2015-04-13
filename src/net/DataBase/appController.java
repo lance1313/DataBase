@@ -1,5 +1,8 @@
 package net.DataBase;
 
+import java.util.ArrayList;
+
+import net.model.QueryInfo;
 import net.view.DatabaseFrame;
 /**
  * this controlles the GUI and the table.
@@ -11,11 +14,13 @@ public class appController
 {
 	private DatabaseFrame appFrame;
 	private static DatabaseControl database;
+	private ArrayList<QueryInfo> timingInfoList;
 	
 	public appController()
 	{
 		database = new DatabaseControl(this);
 		appFrame = new DatabaseFrame(this);
+		timingInfoList = new ArrayList<QueryInfo>();
 		
 	}
 	/**
@@ -23,7 +28,7 @@ public class appController
 	 */
 	public void start()
 	{
-		database.connectionStringBuilder(pathToServer, databaseName, user, password);
+		database.connectionStringBuilder("localHost", "keplarparts", "root", "");
 		database.setupConnection();
 	}
 	/**
@@ -45,6 +50,11 @@ public class appController
 	{
 		return database;
 		
+	}
+	
+	public ArrayList<QueryInfo> getTimingInfoList()
+	{
+		return timingInfoList;
 	}
 
 }

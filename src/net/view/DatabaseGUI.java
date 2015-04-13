@@ -59,6 +59,7 @@ public class DatabaseGUI extends JPanel
 		this.add(password);
 		//password.setEchoChar(``);
 		password.setFont(new Font("Serif", Font.BOLD, 30));
+		//cellRenderer = new 
 	}
 	
 	private void setupTable()
@@ -67,6 +68,10 @@ public class DatabaseGUI extends JPanel
 		//2D array for contents.
 		tabledata = new JTable(baseController.getDatabase().tableInfo(),baseController.getDatabase().getMetaData());
 		displayPane = new JScrollPane(tabledata);
+		for(int spot = 0; spot < tabledata.getColumnCount();spot++)
+		{
+			//tabledata.getColumnModel().getColumn(spot).setCellRenderer(cellRenderer);
+		}
 	}
 	
 	public void setupPane()

@@ -423,7 +423,9 @@ public class DatabaseControl
 	public String[] getMetaData()
 	{
 		String[] colomnInformation;
-		String query = "SHOW TABLES";
+		String query = "SELECT * FROM`INNODB_SYS_COLUMNS`";
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
 
 		try
 		{
@@ -440,14 +442,17 @@ public class DatabaseControl
 
 			answer.close();
 			firstStatement.close();
-
+			endTime = System.currentTimeMillis();
 		}
 
 		catch (SQLException currentSQLError)
 		{
 			colomnInformation = new String[] { "nada exists" };
 			displayErrors(currentSQLError);
+			endTime = System.currentTimeMillis();
 		}
+		//queryTime = endTime - startTime;
+	//	baseController.getQueryList().add(new QueryInfo(query,queryTime));
 		return colomnInformation;
 	}
 
@@ -510,6 +515,26 @@ public class DatabaseControl
 
 		return rowsAffected;
 
+	}
+	
+	public int intChecker()
+	{
+		String results;
+		int isString = Integer.parseInt(results);
+		
+		try
+		{
+			
+		}
+		catch()
+		{
+			
+		}
+		
+		
+		
+		return isString;
+		
 	}
 
 }
