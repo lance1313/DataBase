@@ -133,6 +133,8 @@ public class DatabaseControl
 		// list the tables that belong to my database.
 		// to list a table to a database you must have a statment attatched.
 		String query = "SHOW TABLES";
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
 
 		try
 		{
@@ -199,6 +201,9 @@ public class DatabaseControl
 	public void dropStatement()
 	{
 		String results;
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
+		
 		try
 		{
 			if(checkForStructureViolation())
@@ -240,6 +245,9 @@ public class DatabaseControl
 	public void CreateStatement()
 	{
 		String results;
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
+		
 		try
 		{
 			if(checkForStructureViolation())
@@ -283,7 +291,9 @@ public class DatabaseControl
 
 		// this is a safty net if other code fails and no data is present.
 					this.currentQuery =  query;
-					String  [] [] results;			
+					String  [] [] results;		
+					long startTime,endTime;
+					startTime = System.currentTimeMillis();
 		
 		try
 		{
@@ -335,6 +345,8 @@ public class DatabaseControl
 	{
 		String [] [] results;
 		String query = "SELECT * FROM `INNODB_SYS_COLUMNS`";
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
 		
 		try
 		{
@@ -381,6 +393,8 @@ public class DatabaseControl
 	{
 		String[][] results = { { "default" } };
 		String query = "SHOW TABLES";
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
 
 		try
 		{
@@ -517,24 +531,74 @@ public class DatabaseControl
 
 	}
 	
-	public int intChecker()
+	/**
+	 * 
+	 * @return
+	 */
+//	public int intChecker()
+//	{
+//		String results;
+//		int isString = Integer.parseInt(results);
+//		
+//		try
+//		{
+//			
+//		}
+//		catch()
+//		{
+//			
+//		}
+//		
+//		
+//		
+//		return isString;
+//		
+//	}
+	
+	/**
+	 * this works in any database allwoing use to grab info as we need it.
+	 * @param tableName
+	 * @return
+	 */
+	public String [] getDatabaseColumnNames(String tableName)
 	{
-		String results;
-		int isString = Integer.parseInt(results);
 		
-		try
-		{
-			
+		
+			String[] colomnInformation;
+			String query = "SELECT * FROM`" + tableName +"`";
+			long startTime,endTime;
+			startTime = System.currentTimeMillis();
+
+			try
+			{
+
+				Statement firstStatement = databaseConnection.createStatement();
+				ResultSet answer = firstStatement.executeQuery(query);
+				ResultSetMetaData myMeta = answer.getMetaData();
+
+				colomnInformation = new String[myMeta.getColumnCount()];
+				for (int spot = 0; spot < myMeta.getColumnCount(); spot++)
+				{
+					colomnInformation[spot] = myMeta.getColumnName(spot + 1);
+				}
+
+				answer.close();
+				firstStatement.close();
+				endTime = System.currentTimeMillis();
+				//endTime
+			}
+
+			catch (SQLException currentSQLError)
+			{
+				colomnInformation = new String[] { "nada exists" };
+				displayErrors(currentSQLError);
+				endTime = System.currentTimeMillis();
+			}
+			//queryTime = endTime - startTime;
+		//	baseController.getQueryList().add(new QueryInfo(query,queryTime));
+			return colomnInformation;
 		}
-		catch()
-		{
-			
-		}
 		
-		
-		
-		return isString;
-		
-	}
+	
 
 }
