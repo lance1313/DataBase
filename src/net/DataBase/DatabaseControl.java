@@ -43,7 +43,7 @@ public class DatabaseControl
 	}
 	
 	/**
-	 * ? means it interupts the code to talk to tyhe code in the program
+	 * ? means it interupts the code to talk to the code in the program
 	 * & is a continuation of the ?
 	 * @param pathToServer this is for the database
 	 * @param databaseName the name
@@ -111,7 +111,7 @@ public class DatabaseControl
 	 * @param currentException
 	 *            this is the error to display
 	 */
-	private void displayErrors(Exception currentException)
+	public void displayErrors(Exception currentException)
 	{
 		JOptionPane.showMessageDialog(baseController.getAppFrame(), currentException.getMessage());
 
@@ -480,6 +480,9 @@ public class DatabaseControl
 		// list the tables that belong to my database.
 		// to list a table to a database you must have a statment attatched.
 		String query = "DESCRIBE `contry`";
+		
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
 
 		try
 		{
@@ -515,15 +518,19 @@ public class DatabaseControl
 		int rowsAffected = 0;
 		// this is were the database.table rows and then the values
 		String insertQuery = "INSERT INTO `keplarparts`.`contry`(`ID`,`Name_of_contry`) VALUES (10,`hi`);";
-
+		long startTime,endTime;
+		startTime = System.currentTimeMillis();
+		
 		try
 		{
 			Statement insertStatement = databaseConnection.createStatement();
 			rowsAffected = insertStatement.executeUpdate(insertQuery);
 			insertStatement.close();
+			endTime = System.currentTimeMillis();
 		}
 		catch (SQLException currentSQLError)
 		{
+			endTime = System.currentTimeMillis();
 			displayErrors(currentSQLError);
 		}
 
@@ -539,6 +546,8 @@ public class DatabaseControl
 //	{
 //		String results;
 //		int isString = Integer.parseInt(results);
+//	long startTime,endTime;
+//	startTime = System.currentTimeMillis();
 //		
 //		try
 //		{
@@ -561,6 +570,7 @@ public class DatabaseControl
 	 * @return
 	 */
 	public String [] getDatabaseColumnNames(String tableName)
+
 	{
 		
 		
@@ -598,6 +608,34 @@ public class DatabaseControl
 		//	baseController.getQueryList().add(new QueryInfo(query,queryTime));
 			return colomnInformation;
 		}
+	
+	/**
+	 * This is a greneric method.
+	 * @param currentQuery
+	 */
+	public void submitQuery(String currentQuery)
+	{
+		long startTime , endTime;
+		startTime = System.currentTimeMillis();
+		if(!checkForDataViolation())
+		{
+		try
+		{
+			Statement submitStatement = databaseConnection.createStatement();
+			submitStatement.executeUpdate(currentQuery);
+			submitStatement.close();
+			endTime = System.currentTimeMillis();
+			
+		}
+		
+		catch(SQLException currentError)
+		{
+			
+			endTime = System.currentTimeMillis();
+		displayErrors(currentError);	
+		}
+		}
+	}
 		
 	
 

@@ -1,6 +1,9 @@
 package net.DataBase;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import net.model.QueryInfo;
 import net.view.DatabaseFrame;
@@ -30,6 +33,7 @@ public class appController
 	{
 		database.connectionStringBuilder("localHost", "keplarparts", "root", "");
 		database.setupConnection();
+		loadTimingInfo();
 	}
 	/**
 	 * 
@@ -55,6 +59,42 @@ public class appController
 	public ArrayList<QueryInfo> getTimingInfoList()
 	{
 		return timingInfoList;
+	}
+	
+	private void loadTimingInfo()
+	{
+		File saveFile = new File( "Save.txt");
+		try
+		{
+			if(saveFile.exists())
+			{
+				timingInfoList.clear();
+				Scanner readFileScanner = new Scanner(saveFile);
+				while(readFileScanner.hasNext())
+				{
+					String tempQuery = readFileScanner.nextLine();
+					readFileScanner.next();
+					long tempTime = readFileScanner.nextLong();
+					
+					
+					timingInfoList.add(new QueryInfo(tempQuery,tempTime));
+				}
+				readFileScanner.close();
+			}
+			
+		}
+		
+		catch(IOException error)
+		{
+			
+			this.database.displayErrors(error);
+		}
+		
+	}
+	
+	public void saveQueryTimingInfo()
+	{
+		
 	}
 
 }
